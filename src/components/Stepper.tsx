@@ -5,6 +5,7 @@ export default function Stepper({ initial = 0 }) {
 
     return (
         <div>
+            <h1>Cypress Component Testing</h1>
             <button aria-label="decrement" onClick={() => setCount(count - 1)}>
                 -
             </button>
