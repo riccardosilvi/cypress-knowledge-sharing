@@ -8,6 +8,11 @@ declare global {
     namespace Cypress {
         interface Chainable {
             mount: typeof mount
+            /**
+             * Custom command to select DOM element by data-cy attribute.
+             * @example cy.dataCy('greeting')
+             */
+            dataCy(value: string): Chainable<Element>
         }
     }
 }
