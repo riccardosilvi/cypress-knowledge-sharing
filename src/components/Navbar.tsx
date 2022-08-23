@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import { Logo } from "./Logo";
 import { useAuth } from "../context/AuthContext";
 import * as routes from "../routes";
+import { AuthenticatedContent } from "./AuthenticatedContent";
 
 function AuthSection({ url }: { url: string }) {
   return (
@@ -15,14 +16,13 @@ function AuthSection({ url }: { url: string }) {
           </UpdatedButton>
         </Link>
       )}
-      {!url.includes(routes.SIGNUP_PATH) &&
-        !url.includes(routes.START_NOW_PATH) && (
-          <Link to={routes.SIGNUP_PATH}>
-            <UpdatedButton size="xs">
-              Non hai un account? <span>Iscriviti</span>
-            </UpdatedButton>
-          </Link>
-        )}
+      {!url.includes(routes.SIGNUP_PATH) && (
+        <Link to={routes.SIGNUP_PATH}>
+          <UpdatedButton size="xs">
+            Non hai un account? <span>Iscriviti</span>
+          </UpdatedButton>
+        </Link>
+      )}
     </Stack>
   );
 }
@@ -30,7 +30,6 @@ function AuthSection({ url }: { url: string }) {
 export const Navbar = () => {
   const { url } = useRouteMatch();
   const theme = useTheme();
-  const { user } = useAuth();
 
   return (
     <Box
@@ -57,7 +56,9 @@ export const Navbar = () => {
         <Link to={"/"}>
           <Logo height="30px" />
         </Link>
-        {!user ? <AuthSection url={url} /> : null}
+        <AuthenticatedContent>
+          <AuthSection url={url} />
+        </AuthenticatedContent>
       </Box>
     </Box>
   );

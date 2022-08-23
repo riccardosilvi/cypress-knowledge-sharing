@@ -3,6 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import { Navbar } from "./components/Navbar";
 import { AuthContextProvider } from "./context/AuthContext";
+import { PrivateRoute } from "./components/PrivateRoute";
+import * as routes from "./routes";
 
 function App() {
   return (
@@ -18,11 +20,14 @@ function App() {
                 maxWidth={["100%", "container.12"]}
               >
                 <Switch>
-                  <Route path="/login">login</Route>
-                  <Route path="/signup">signup</Route>
-                  <Route exact path="/">
+                  <Route path={routes.LOGIN_PATH}>login</Route>
+                  <Route path={routes.SIGNUP_PATH}>signup</Route>
+                  <Route exact path={routes.HOME_PATH}>
                     homepage
                   </Route>
+                  <PrivateRoute path={routes.MARKETS_PATH}>
+                    Markets
+                  </PrivateRoute>
                 </Switch>
               </Box>
             </main>
