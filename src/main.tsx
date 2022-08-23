@@ -9,6 +9,7 @@ import {
 import App from "./App";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
+import { SWRConfig } from "swr";
 
 const GlobalStyle = createGlobalStyle(
   css({
@@ -27,16 +28,26 @@ const GlobalStyle = createGlobalStyle(
   })
 );
 
-ReactDOM.render(
-  <React.StrictMode>
-    <YoungProvider>
-      <ThemeProvider theme={{ layout: "light" } as DefaultTheme}>
-        <GlobalStyle />
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
-    </YoungProvider>
-  </React.StrictMode>,
-  document.getElementById("root") as HTMLElement
-);
+const swrOptions = {
+  fetcher: (...args: Parameters<typeof fetch>) =>
+    fetch(...args).then((res) => res.json()),
+};
+// @ts-ignore
+import("./mocks/browser").then(({ worker }) => {
+  worker.start({ onUnhandledRequest: "bypass" });
+  ReactDOM.render(
+    <React.StrictMode>
+      <YoungProvider>
+        <ThemeProvider theme={{ layout: "light" } as DefaultTheme}>
+          <GlobalStyle />
+          <BrowserRouter>
+            <SWRConfig value={swrOptions}>
+              <App />
+            </SWRConfig>
+          </BrowserRouter>
+        </ThemeProvider>
+      </YoungProvider>
+    </React.StrictMode>,
+    document.getElementById("root") as HTMLElement
+  );
+});

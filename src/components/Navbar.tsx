@@ -2,11 +2,12 @@ import { Box, Stack, UpdatedButton } from "@youngagency/young-ui";
 import { Link, useRouteMatch } from "react-router-dom";
 import { useTheme } from "styled-components";
 import { Logo } from "./Logo";
-import { useAuth } from "../context/AuthContext";
 import * as routes from "../routes";
-import { AuthenticatedContent } from "./AuthenticatedContent";
+import { NotAuthenticatedContent } from "./AuthenticatedContent";
+import { useAuth } from "../context/AuthContext";
 
 function AuthSection({ url }: { url: string }) {
+  const { signin } = useAuth();
   return (
     <Stack direction="row" spacing="4px">
       {!url.includes(routes.LOGIN_PATH) && (
@@ -17,11 +18,15 @@ function AuthSection({ url }: { url: string }) {
         </Link>
       )}
       {!url.includes(routes.SIGNUP_PATH) && (
-        <Link to={routes.SIGNUP_PATH}>
-          <UpdatedButton size="xs">
-            Non hai un account? <span>Iscriviti</span>
-          </UpdatedButton>
-        </Link>
+        <UpdatedButton
+          size="xs"
+          onClick={() => {
+            // @ts-ignore
+            signin(() => {});
+          }}
+        >
+          Non hai un account? <span>Iscriviti</span>
+        </UpdatedButton>
       )}
     </Stack>
   );
@@ -56,9 +61,9 @@ export const Navbar = () => {
         <Link to={"/"}>
           <Logo height="30px" />
         </Link>
-        <AuthenticatedContent>
+        <NotAuthenticatedContent>
           <AuthSection url={url} />
-        </AuthenticatedContent>
+        </NotAuthenticatedContent>
       </Box>
     </Box>
   );
