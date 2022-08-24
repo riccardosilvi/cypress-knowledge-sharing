@@ -11,7 +11,7 @@
   "dependencies": {
     "@youngagency/young-ui": "^3.24.0",
     "formik": "^2.2.9",
-    "framer-motion": "^4.1.17",
+    "framer-motion": "^6.2.8",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-router-dom": "^5.3.3",
