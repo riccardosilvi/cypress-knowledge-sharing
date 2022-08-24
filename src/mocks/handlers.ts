@@ -1,7 +1,40 @@
 import { rest } from "msw";
 import { Market } from "../types/markets";
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type SignUpRequest = {
+  email: string;
+  password: string;
+};
+
+// @ts-ignore
+const authHandler = (req, res, ctx) => {
+  const parsedBody = JSON.parse(req.body);
+  const { email, password } = parsedBody;
+  const errors = {
+    ...(password != "123456789" ? {} : { password: "password non valida" }),
+    ...(email !== "test@test.com" ? {} : { email: "email non valida" }),
+  };
+
+  if (Object.keys(errors).length > 0) {
+    return res(
+      ctx.status(400),
+      ctx.json({
+        success: false,
+        errors: errors,
+      })
+    );
+  }
+
+  return res(ctx.status(200), ctx.json({ success: true, user: email }));
+};
 
 export const handlers = [
+  rest.post<LoginRequest>("/api/account/login", authHandler),
+  rest.post<SignUpRequest>("/api/account/signup", authHandler),
   rest.get("/api/markets", (req, res, ctx) => {
     // Check if the user is authenticated in this session
     /*

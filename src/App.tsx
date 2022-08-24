@@ -7,6 +7,8 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import * as routes from "./routes";
 import { MarketsPage } from "./pages/markets/MarketsPage";
 import { Homepage } from "./pages/home/Homepage";
+import { SignUpPage } from "./pages/signup/SignUpPage";
+import { LogInPage } from "./pages/login/LogInPage";
 
 function App() {
   return (
@@ -22,14 +24,18 @@ function App() {
                 maxWidth={["100%", "container.12"]}
               >
                 <Switch>
-                  <Route path={routes.LOGIN_PATH}>login</Route>
-                  <Route path={routes.SIGNUP_PATH}>signup</Route>
-                  <Route exact path={routes.HOME_PATH}>
-                    <Homepage />
+                  <Route path={routes.LOGIN_PATH}>
+                    <LogInPage />
+                  </Route>
+                  <Route path={routes.SIGNUP_PATH}>
+                    <SignUpPage />
                   </Route>
                   <PrivateRoute path={routes.MARKETS_PATH}>
                     <MarketsPage />
                   </PrivateRoute>
+                  <Route exact path={routes.HOME_PATH}>
+                    <Homepage />
+                  </Route>
                 </Switch>
               </Box>
             </main>

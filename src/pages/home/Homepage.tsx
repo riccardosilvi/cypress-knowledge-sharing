@@ -1,17 +1,6 @@
-import {
-  Box,
-  Heading,
-  Paragraph,
-  Stack,
-  UpdatedButton,
-} from "@youngagency/young-ui";
+import { Box, Heading, Paragraph, Stack } from "@youngagency/young-ui";
 import { useAuth } from "../../context/AuthContext";
-import {
-  AuthenticatedContent,
-  NotAuthenticatedContent,
-} from "../../components/AuthenticatedContent";
-import { Link } from "react-router-dom";
-import { MARKETS_PATH } from "../../routes";
+import { NotAuthenticatedContent } from "../../components/AuthenticatedContent";
 
 export function Homepage() {
   const { user = "" } = useAuth();
@@ -32,15 +21,6 @@ export function Homepage() {
             Che ne dici di loggarti?
           </Paragraph>
         </NotAuthenticatedContent>
-        <AuthenticatedContent>
-          <Paragraph size={"md"} weight={"heavy"}>
-            <Link to={MARKETS_PATH}>
-              <UpdatedButton size="xs">
-                Dai un'occhiata ai Mercati
-              </UpdatedButton>
-            </Link>
-          </Paragraph>
-        </AuthenticatedContent>
       </Stack>
     </Box>
   );

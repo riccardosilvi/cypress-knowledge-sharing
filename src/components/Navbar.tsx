@@ -1,13 +1,14 @@
 import { Box, Stack, UpdatedButton } from "@youngagency/young-ui";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import { useTheme } from "styled-components";
 import { Logo } from "./Logo";
 import * as routes from "../routes";
-import { NotAuthenticatedContent } from "./AuthenticatedContent";
-import { useAuth } from "../context/AuthContext";
+import {
+  AuthenticatedContent,
+  NotAuthenticatedContent,
+} from "./AuthenticatedContent";
 
 function AuthSection({ url }: { url: string }) {
-  const { signin } = useAuth();
   return (
     <Stack direction="row" spacing="4px">
       {!url.includes(routes.LOGIN_PATH) && (
@@ -18,24 +19,19 @@ function AuthSection({ url }: { url: string }) {
         </Link>
       )}
       {!url.includes(routes.SIGNUP_PATH) && (
-        <UpdatedButton
-          size="xs"
-          onClick={() => {
-            // @ts-ignore
-            signin(() => {});
-          }}
-        >
-          Non hai un account? <span>Iscriviti</span>
-        </UpdatedButton>
+        <Link to={routes.SIGNUP_PATH}>
+          <UpdatedButton size="xs">
+            Non hai un account? <span>Iscriviti</span>
+          </UpdatedButton>
+        </Link>
       )}
     </Stack>
   );
 }
 
 export const Navbar = () => {
-  const { url } = useRouteMatch();
+  const { pathname: url } = useLocation();
   const theme = useTheme();
-
   return (
     <Box
       px={["16px", null, "0"]}
@@ -64,6 +60,15 @@ export const Navbar = () => {
         <NotAuthenticatedContent>
           <AuthSection url={url} />
         </NotAuthenticatedContent>
+        <AuthenticatedContent>
+          <>
+            {!url.includes(routes.MARKETS_PATH) && (
+              <Link to={routes.MARKETS_PATH}>
+                <UpdatedButton size="xs">Mercati</UpdatedButton>
+              </Link>
+            )}
+          </>
+        </AuthenticatedContent>
       </Box>
     </Box>
   );
