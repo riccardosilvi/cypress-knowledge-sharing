@@ -10,6 +10,7 @@ import App from "./App";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { SWRConfig } from "swr";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const GlobalStyle = createGlobalStyle(
   css({
@@ -42,7 +43,9 @@ import("./mocks/browser").then(({ worker }) => {
           <GlobalStyle />
           <BrowserRouter>
             <SWRConfig value={swrOptions}>
-              <App />
+              <AuthContextProvider>
+                <App />
+              </AuthContextProvider>
             </SWRConfig>
           </BrowserRouter>
         </ThemeProvider>
