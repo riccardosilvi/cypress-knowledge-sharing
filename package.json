@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@youngagency/young-ui": "^3.24.0",
+    "dotenv": "^16.0.1",
     "formik": "^2.2.9",
     "framer-motion": "^6.2.8",
     "react": "^17.0.0",
@@ -20,8 +21,9 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "@testing-library/cypress": "^8.0.3",
     "@mswjs/data": "^0.10.1",
+    "@rollup/plugin-replace": "^4.0.0",
+    "@testing-library/cypress": "^8.0.3",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.16",
     "@types/react-router-dom": "^5.3.3",

@@ -30,6 +30,7 @@ Cypress.Commands.add('mount', mount)
 
 // Example use:
 // cy.mount(<MyComponent />)
+// @ts-ignore
 Cypress.Commands.add('dataCy', (value: string) => {
     cy.get(`[data-cy=${value}]`)
 })
