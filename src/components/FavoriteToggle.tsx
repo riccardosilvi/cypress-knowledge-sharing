@@ -3,10 +3,16 @@ import { Box } from "@youngagency/young-ui";
 
 type Props = {
   onChanged?: (isActive: boolean) => void;
+  isInitialFavorite?: boolean;
 };
 
-export function FavoriteToggle({ onChanged }: Props) {
-  const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
+export function FavoriteToggle({
+  onChanged,
+  isInitialFavorite = false,
+}: Props) {
+  const [isFavorite, setIsFavorite] =
+    React.useState<boolean>(isInitialFavorite);
+  const isFirstRenderRef = React.useRef<boolean>(true);
 
   const handleFavorite = React.useCallback((e: React.MouseEvent) => {
     setIsFavorite((prevState) => !prevState);
@@ -17,7 +23,10 @@ export function FavoriteToggle({ onChanged }: Props) {
   >(onChanged);
 
   useEffect(() => {
-    onChangedCallbackRef.current = onChanged;
+    if (!isFirstRenderRef.current) {
+      onChangedCallbackRef.current = onChanged;
+    }
+    isFirstRenderRef.current = false;
   }, [onChanged]);
 
   useEffect(() => {
