@@ -90,7 +90,7 @@ export const MarketItem = ({ market }: Props) => {
   const pricePercentChange = calculatePriceAmount(INITIAL_PRICE, fiatPrice);
 
   return (
-    <ItemContainer>
+    <ItemContainer data-cy={`market-item-${market.symbol.toLowerCase()}`}>
       <Stack
         direction="row"
         pl={"16px"}
