@@ -46,6 +46,10 @@ const render = (component: ReactNode) => {
   return mount(TestComponent);
 };
 
+const getEmailField = () => cy.findByLabelText("Email");
+const getPasswordField = () => cy.findByLabelText("Password");
+const getSubmitButton = () => cy.findByText("Entra");
+
 describe("unit > components > LogInForm", () => {
   beforeEach(() => {
     cy.viewport(1024, 768);
@@ -61,44 +65,44 @@ describe("unit > components > LogInForm", () => {
       it("should show requested field error, when input blurs out with no value", () => {
         render(<LogInForm />);
 
-        cy.findByLabelText("Email").focus().blur();
+        getEmailField().focus().blur();
         cy.findByText("Campo Email richiesto").should("be.visible");
 
-        cy.findByText("Entra").should("be.disabled");
+        getSubmitButton().should("be.disabled");
       });
 
       it("should not accept invalid value, when input blurs out", () => {
         render(<LogInForm />);
 
-        cy.findByLabelText("Email")
+        getEmailField()
           .type("invalidmail", {
             force: true,
           })
           .blur();
         cy.findByText("Campo Email non valido").should("be.visible");
 
-        cy.findByText("Entra").should("be.disabled");
+        getSubmitButton().should("be.disabled");
       });
     });
     describe("password errors", () => {
       it("should show requested field error, when input blurs out with no value", () => {
         render(<LogInForm />);
 
-        cy.findByLabelText("Password").focus().blur();
+        getPasswordField().focus().blur();
         cy.findByText("Campo Password richiesto").should("be.visible");
 
-        cy.findByText("Entra").should("be.disabled");
+        getSubmitButton().should("be.disabled");
       });
 
       it("should show aggregated errors label, when input is invalid and focused", () => {
         render(<LogInForm />);
 
-        cy.findByLabelText("Password").type("meh", {
+        getPasswordField().type("meh", {
           force: true,
         });
         cy.findByText("almeno una maiuscola,").should("be.visible");
 
-        cy.findByText("Entra").should("be.disabled");
+        getSubmitButton().should("be.disabled");
       });
     });
   });
@@ -113,13 +117,13 @@ describe("unit > components > LogInForm", () => {
         },
       }).as("login");
       render(<LogInForm />);
-      cy.findByLabelText("Email").type("silvicardo@gmail.com", {
+      getEmailField().type("silvicardo@gmail.com", {
         force: true,
       });
-      cy.findByLabelText("Password").type("T&stone1", { force: true });
-      cy.findByText("Entra").click();
+      getPasswordField().type("T&stone1", { force: true });
+      getSubmitButton().click();
       cy.wait("@login");
-      cy.findByText("Entra").should("be.enabled");
+      getSubmitButton().should("be.enabled");
     });
 
     it("should show errors, when submit api call fails", () => {
@@ -137,17 +141,17 @@ describe("unit > components > LogInForm", () => {
 
       render(<LogInForm />);
 
-      cy.findByLabelText("Email").type("silvicardo@gmail.com", {
+      getEmailField().type("silvicardo@gmail.com", {
         force: true,
       });
-      cy.findByLabelText("Password").type("T&stone1", { force: true });
-      cy.findByText("Entra").click();
+      getPasswordField().type("T&stone1", { force: true });
+      getSubmitButton().click();
 
       cy.wait("@login");
 
       cy.findByText("email api error").should("be.visible");
       cy.findByText("password api error").should("be.visible");
-      cy.findByText("Entra").should("be.disabled");
+      getSubmitButton().should("be.disabled");
     });
   });
 });
