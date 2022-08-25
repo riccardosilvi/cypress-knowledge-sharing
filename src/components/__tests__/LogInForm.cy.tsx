@@ -47,6 +47,9 @@ const render = (component: ReactNode) => {
 };
 
 describe("unit > components > LogInForm", () => {
+  beforeEach(() => {
+    cy.viewport(1024, 768);
+  });
   describe("renders", () => {
     it("mounts", () => {
       render(<LogInForm />);
