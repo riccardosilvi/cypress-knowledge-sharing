@@ -48,22 +48,103 @@ const render = (component: ReactNode) => {
 
 describe("unit > components > LogInForm", () => {
   describe("renders", () => {
-    it.only("mounts", () => {
+    it("mounts", () => {
       render(<LogInForm />);
     });
   });
-  describe.skip("validation", () => {
-    describe("email", () => {
-      it("should not accept invalid value, when input blurs out", () => {});
+
+  describe("validation", () => {
+    describe("email errors", () => {
+      it("should show requested field error, when input blurs out with no value", () => {
+        render(<LogInForm />);
+
+        cy.findByLabelText("Email").focus().blur();
+        cy.findByText("Campo Email richiesto").should("be.visible");
+
+        cy.findByText("Entra").should("be.disabled");
+      });
+
+      it("should not accept invalid value, when input blurs out", () => {
+        render(<LogInForm />);
+
+        cy.findByLabelText("Email")
+          .type("invalidmail", {
+            force: true,
+          })
+          .blur();
+        cy.findByText("Campo Email non valido").should("be.visible");
+
+        cy.findByText("Entra").should("be.disabled");
+      });
     });
-    describe("password", () => {
-      it("should not accept invalid value, when input blurs out", () => {});
+    describe("password errors", () => {
+      it("should show requested field error, when input blurs out with no value", () => {
+        render(<LogInForm />);
+
+        cy.findByLabelText("Password").focus().blur();
+        cy.findByText("Campo Password richiesto").should("be.visible");
+
+        cy.findByText("Entra").should("be.disabled");
+      });
+
+      it("should show aggregated errors label, when input is invalid and focused", () => {
+        render(<LogInForm />);
+
+        cy.findByLabelText("Password").type("meh", {
+          force: true,
+        });
+        cy.findByText("almeno una maiuscola,").should("be.visible");
+
+        cy.findByText("Entra").should("be.disabled");
+      });
     });
   });
 
-  describe.skip("submit", () => {
-    it("should redirect user to homepage, when login succeeds", () => {});
+  describe("submit", () => {
+    it("should redirect user to homepage, when login succeeds", () => {
+      cy.intercept("POST", "**/api/account/login", {
+        statusCode: 200,
+        body: {
+          success: true,
+          user: "silvicardo@gmail.com",
+        },
+      }).as("login");
+      render(<LogInForm />);
+      cy.findByLabelText("Email").type("silvicardo@gmail.com", {
+        force: true,
+      });
+      cy.findByLabelText("Password").type("T&stone1", { force: true });
+      cy.findByText("Entra").click();
+      cy.wait("@login");
+      cy.findByText("Entra").should("be.enabled");
+    });
 
-    it("should show errors, when submit api call fails", () => {});
+    it("should show errors, when submit api call fails", () => {
+      cy.intercept("POST", "**/api/account/login", {
+        statusCode: 400,
+        body: {
+          success: false,
+          user: "silvicardo@gmail.com",
+          errors: {
+            email: "email api error",
+            password: "password api error",
+          },
+        },
+      }).as("login");
+
+      render(<LogInForm />);
+
+      cy.findByLabelText("Email").type("silvicardo@gmail.com", {
+        force: true,
+      });
+      cy.findByLabelText("Password").type("T&stone1", { force: true });
+      cy.findByText("Entra").click();
+
+      cy.wait("@login");
+
+      cy.findByText("email api error").should("be.visible");
+      cy.findByText("password api error").should("be.visible");
+      cy.findByText("Entra").should("be.disabled");
+    });
   });
 });
