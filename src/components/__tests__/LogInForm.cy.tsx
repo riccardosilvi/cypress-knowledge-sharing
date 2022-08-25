@@ -51,9 +51,6 @@ const getPasswordField = () => cy.findByLabelText("Password");
 const getSubmitButton = () => cy.findByText("Entra");
 
 describe("integration > components > LogInForm", () => {
-  beforeEach(() => {
-    cy.viewport(1024, 768);
-  });
   describe("renders", () => {
     it("mounts", () => {
       render(<LogInForm />);
