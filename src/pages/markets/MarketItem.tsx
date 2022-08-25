@@ -10,6 +10,7 @@ import {
 } from "@youngagency/young-ui";
 import React from "react";
 import { Market } from "../../types/markets";
+import { FavoriteToggle } from "../../components/FavoriteToggle";
 
 const SingleLineParagraph = styled(Paragraph)({
   textOverflow: "ellipsis",
@@ -67,11 +68,6 @@ function getRandomArbitrary(min: number, max: number) {
 export const MarketItem = ({ market }: Props) => {
   const INITIAL_PRICE = React.useMemo(() => getRandomArbitrary(1, 2000), []);
   const [fiatPrice, setFiatPrice] = React.useState<number>(INITIAL_PRICE);
-  const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
-
-  const handleFavorite = React.useCallback((e: React.MouseEvent) => {
-    setIsFavorite((prevState) => !prevState);
-  }, []);
 
   const handlePumpIt = React.useCallback(() => {
     setFiatPrice((prevState) =>
@@ -101,16 +97,7 @@ export const MarketItem = ({ market }: Props) => {
         <Box flexBasis={0} flexGrow={2}>
           <Stack direction="row" spacing="16px" align="center">
             <Image src={market.image_light} alt={market.name} />
-            <Box
-              minWidth="46px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              onClick={handleFavorite}
-            >
-              {!isFavorite && <span>&#9734;</span>}
-              {isFavorite && <span>&#9733;</span>}
-            </Box>
+            <FavoriteToggle />
             <Stack direction="column" spacing="2px" overflow="hidden">
               <SingleLineHeading size="sm">{market.name}</SingleLineHeading>
               <Stack direction="row" spacing="5px" align="center">
