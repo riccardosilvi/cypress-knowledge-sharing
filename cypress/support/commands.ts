@@ -37,3 +37,7 @@
 // }
 
 import '@testing-library/cypress/add-commands'
+
+Cypress.Commands.add('dataCy', (value: string) => {
+    cy.get(`[data-cy=${value}]`)
+})
