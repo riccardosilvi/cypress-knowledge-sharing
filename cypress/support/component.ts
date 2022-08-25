@@ -19,7 +19,7 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-import { mount } from 'cypress/react18'
+import { mount } from 'cypress/react'
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -30,6 +30,7 @@ Cypress.Commands.add('mount', mount)
 
 // Example use:
 // cy.mount(<MyComponent />)
+// @ts-ignore
 Cypress.Commands.add('dataCy', (value: string) => {
     cy.get(`[data-cy=${value}]`)
 })
