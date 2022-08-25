@@ -1,9 +1,6 @@
 import { FavoriteToggle } from "../FavoriteToggle";
 
 describe("unit > components > FavoriteToggle", () => {
-  beforeEach(() => {
-    cy.viewport(1024, 768);
-  });
   describe("renders", () => {
     it("mounts", () => {
       cy.mount(<FavoriteToggle />);
@@ -40,7 +37,7 @@ describe("unit > components > FavoriteToggle", () => {
     it("should not be invoked, when component initially renders", () => {
       const onChangeSpy = cy.spy().as("onChangeSpy");
       cy.mount(<FavoriteToggle onChanged={onChangeSpy} />);
-      cy.get("@onChangeSpy").should("not.have.been.called");
+      expect(onChangeSpy).not.to.have.been.called;
     });
 
     it("should be invoked, when component toggle favorite status", () => {
